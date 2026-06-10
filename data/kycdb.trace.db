@@ -1,0 +1,6 @@
+2026-06-09 20:17:57.410831+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "KYC_RECORD" not found (this database is empty); SQL statement:
+select kr1_0.id_number,kr1_0.date_of_birth,kr1_0.first_name,kr1_0.gender,kr1_0.id_type,kr1_0.last_name from kyc_record kr1_0 where kr1_0.id_number=? [42104-240]
+2026-06-09 20:18:30.232204+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "KYC_RECORD" not found (this database is empty); SQL statement:
+select kr1_0.id_number,kr1_0.date_of_birth,kr1_0.first_name,kr1_0.gender,kr1_0.id_type,kr1_0.last_name from kyc_record kr1_0 where kr1_0.id_number=? [42104-240]
