@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
+
 @Data
 @Entity
 public class KycRecord {
@@ -17,6 +19,9 @@ public class KycRecord {
     @NotBlank
 
     private String idType;
+    @NotBlank
+    private String idName;
+    @NotBlank
     private String clientType;
 
     private String prefix;
@@ -27,24 +32,29 @@ public class KycRecord {
     private String lastName;
 
     private String relationshipType;
-
+    private String relatedPersonPrefix;
     private String relatedPersonFirstName;
     private String relatedPersonMiddleName;
     private String relatedPersonLastName;
 
     private String gender;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     @Size(min = 10, max = 10)
 
     private String mobileNumber;
     @Email
     private String emailAddress;
-
+    @NotBlank
     private String addressLine1;
+    @NotBlank
     private String city;
+
     private String district;
+    @NotBlank
     private String state;
+    @NotBlank
     private String country;
+    @NotBlank
     private String pinCode;
 
     private String correspondenceAddressLine1;

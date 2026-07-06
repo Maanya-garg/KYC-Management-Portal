@@ -1,0 +1,44 @@
+<div class="login-container">
+
+  <div class="login-card">
+
+    <h1>IFFCO TOKIO KYC PORTAL</h1>
+
+    <p class="subtitle">
+      Login to access the KYC Management System
+    </p>
+
+    <div class="form-group">
+
+      <label>Username</label>
+
+      <input
+        type="text"
+        [(ngModel)]="username"
+        placeholder="Enter your username">
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Password</label>
+
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password">
+
+    </div>
+
+    <button
+      class="login-btn"
+      (click)="login()">
+
+      Login
+
+    </button>
+    <p class="demo-note">
+      Default Login: <strong>admin</strong> / <strong>admin123</strong>
+    </p>
+  </div>
+</div>

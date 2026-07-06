@@ -1,0 +1,292 @@
+<div class="page-container">
+
+  ```
+  <div class="page-header">
+    <h1>Create KYC</h1>
+  </div>
+
+  <div class="section-card">
+
+    <h2>KYC Details</h2>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>ID Number
+          <span class="required">*</span>
+        </label>
+        <input type="text" [(ngModel)]="idNumber">
+      </div>
+
+      <div class="form-group">
+        <label>Client Type
+          <span class="required">*</span></label>
+        <select [(ngModel)]="clientType"  (ngModelChange)="onIdTypeChange()">
+          <option value="IND">IND</option>
+          <option value="LE">LE</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>ID Type
+          <span class="required">*</span>
+        </label>
+        <select [(ngModel)]="idType" (ngModelChange)="onIdTypeChange()">
+          <option value="">Select ID Type</option>
+          <option value="IDENTITY_PROOF">IDENTITY_PROOF</option>
+          <option value="ADDRESS_PROOF">ADDRESS_PROOF</option>
+          @if(clientType=="IND"){
+          <option value="Others">Others</option>}
+        </select>
+      </div>
+
+      <div class="form-group">
+      <label>ID Name <span class="required">*</span></label>
+
+      <select
+        [(ngModel)]="idName">
+
+        <option value="">Select ID Name</option>
+
+        @for(name of idNames; track name){
+
+          <option [value]="name">
+
+            {{name}}
+
+          </option>
+
+        }
+
+      </select>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-card">
+
+    <h2>Personal Details</h2>
+
+    <div class="form-grid">
+      @if(clientType == 'IND'){
+        <div class="form-group">
+          <label>Prefix</label>
+          <select [(ngModel)]="prefix">
+            <option value="">Select Prefix</option>
+            <option value="MR">MR</option>
+            <option value="MRS">MRS</option>
+            <option value="MS">MS</option>
+          </select>
+        </div>
+
+      }
+      <div class="form-group">
+        <label>
+          {{ clientType == 'LE' ? 'Corporate Name' : 'First Name' }}
+          <span class="required">*</span>
+        </label>
+        <input type="text" [(ngModel)]="firstName">
+      </div>
+      @if(clientType == 'IND'){
+
+
+        <div class="form-group">
+          <label>Middle Name</label>
+          <input type="text" [(ngModel)]="middleName">
+        </div>
+
+        <div class="form-group">
+          <label>Last Name <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="lastName">
+        </div>
+          <div class="form-group">
+            <label>Gender <span class="required">*</span></label>
+            <select [(ngModel)]="gender">
+              <option value="">Select Gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+              <option value="T">Transgender</option>
+            </select>
+          </div> }
+      <div class="form-group">
+        <label>
+          {{ clientType == 'LE' ? 'Date Of Incorporation' : 'Date Of Birth' }}
+          <span class="required">*</span>
+        </label>
+        <input type="date" [(ngModel)]="dateOfBirth">
+      </div>
+    </div>
+
+  </div>
+  @if (clientType == 'IND'){
+  <div class="section-card">
+
+    <h2>Related Person Details</h2>
+
+    <div class="form-grid">
+        <div class="form-group">
+          <label>Relationship Type</label>
+          <select [(ngModel)]="relationshipType">
+            <option value="">Select Relationship</option>
+            <option value="Father">Father</option>
+            <option value="Mother">Mother</option>
+            <option value="Spouse">Spouse</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Related Person Prefix</label>
+          <select [(ngModel)]="relatedPersonPrefix">
+            <option value="">Select Prefix</option>
+            <option value="MR">MR</option>
+            <option value="MRS">MRS</option>
+            <option value="MS">MS</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Related Person First Name</label>
+          <input type="text" [(ngModel)]="relatedPersonFirstName">
+        </div>
+
+        <div class="form-group">
+          <label>Related Person Middle Name</label>
+          <input type="text" [(ngModel)]="relatedPersonMiddleName">
+        </div>
+
+        <div class="form-group">
+          <label>Related Person Last Name</label>
+          <input type="text" [(ngModel)]="relatedPersonLastName">
+        </div>
+
+    </div>
+  </div>
+  }
+  <div class="section-card">
+
+    <h2>Contact Details</h2>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Mobile Number
+          <span class="required">*</span>
+        </label>
+        <input type="text" [(ngModel)]="mobileNumber">
+      </div>
+
+      <div class="form-group">
+        <label>Email Address
+          <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="emailAddress">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="section-card">
+
+    <h2>Address Details</h2>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Address Line 1 <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="addressLine1" (ngModelChange)="onAddressChange()">
+      </div>
+
+      <div class="form-group">
+        <label>City <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="city" (ngModelChange)="onAddressChange()">
+      </div>
+
+      <div class="form-group">
+        <label>District</label>
+        <input type="text" [(ngModel)]="district" (ngModelChange)="onAddressChange()">
+      </div>
+
+      <div class="form-group">
+        <label>State <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="state" (ngModelChange)="onAddressChange()">
+      </div>
+
+      <div class="form-group">
+        <label>Country <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="country" (ngModelChange)="onAddressChange()">
+      </div>
+
+      <div class="form-group">
+        <label>Pin Code <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="pinCode" (ngModelChange)="onAddressChange()">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="section-card">
+
+    <h2>Correspondence Address</h2>
+
+    <div class="same-address">
+
+      <input
+        type="checkbox"
+        [(ngModel)]="sameAsAddress"
+        (change)="copyAddress()">
+
+      <label>Same as Address</label>
+
+    </div>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Correspondence Address Line 1</label>
+        <input type="text" [(ngModel)]="correspondenceAddressLine1">
+      </div>
+
+      <div class="form-group">
+        <label>Correspondence City</label>
+        <input type="text" [(ngModel)]="correspondenceCity">
+      </div>
+
+      <div class="form-group">
+        <label>Correspondence District</label>
+        <input type="text" [(ngModel)]="correspondenceDistrict">
+      </div>
+
+      <div class="form-group">
+        <label>Correspondence State</label>
+        <input type="text" [(ngModel)]="correspondenceState">
+      </div>
+
+      <div class="form-group">
+        <label>Correspondence Country</label>
+        <input type="text" [(ngModel)]="correspondenceCountry">
+      </div>
+
+      <div class="form-group">
+        <label>Correspondence Pin Code</label>
+        <input type="text" [(ngModel)]="correspondencePinCode">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="button-container">
+
+    <button
+      class="submit-btn"
+      (click)="submitForm()">
+
+      Create KYC
+
+    </button>
+
+  </div>
+  ```
+
+</div>

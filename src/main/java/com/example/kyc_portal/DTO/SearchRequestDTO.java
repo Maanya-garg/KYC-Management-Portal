@@ -7,7 +7,7 @@ public class SearchRequestDTO {
 
     private String idType;
     private String idNumber;
-
+    private String idName;
     private String firstName;
     private String middleName;
     private String lastName;

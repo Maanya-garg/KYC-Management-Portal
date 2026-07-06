@@ -6,6 +6,7 @@ import com.example.kyc_portal.repository.KycRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +22,6 @@ public class KycService {
         return repo.findAll();
     }
 
-
-
     public KycRecord updateKyc(String idNumber, KycRecord updatedRecord){
 
         Optional<KycRecord> existingRecord =
@@ -34,7 +33,7 @@ public class KycService {
 
             record.setClientType(updatedRecord.getClientType());
             record.setIdType(updatedRecord.getIdType());
-
+            record.setIdName(updatedRecord.getIdName());
             record.setFirstName(updatedRecord.getFirstName());
             record.setMiddleName(updatedRecord.getMiddleName());
             record.setLastName(updatedRecord.getLastName());
@@ -43,7 +42,8 @@ public class KycService {
             record.setDateOfBirth(updatedRecord.getDateOfBirth());
 
             record.setRelationshipType(updatedRecord.getRelationshipType());
-
+            record.setRelatedPersonPrefix(
+                    updatedRecord.getRelatedPersonPrefix());
             record.setRelatedPersonFirstName(
                     updatedRecord.getRelatedPersonFirstName());
 
@@ -104,12 +104,17 @@ public class KycService {
     public KycRecord searchKyc(SearchRequestDTO request) {
         return repo.searchKyc(
                 request.getIdType(),
+                request.getIdName(),
                 request.getIdNumber(),
                 request.getFirstName(),
-                request.getMiddleName(),
                 request.getLastName(),
                 request.getGender(),
-                request.getDateOfBirth()
+                LocalDate.parse(request.getDateOfBirth())
         ).orElse(null);
+    }
+    public KycRecord getKycByIdNumber(String idNumber){
+
+        return repo.findByIdNumber(idNumber)
+                .orElse(null);
     }
 }

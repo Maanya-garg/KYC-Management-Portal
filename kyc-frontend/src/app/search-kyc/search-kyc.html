@@ -1,0 +1,170 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <h1>Search KYC</h1>
+  </div>
+
+  <div class="section-card">
+
+    <h2>Search Criteria</h2>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>ID Number  <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="idNumber">
+      </div>
+
+      <div class="form-group">
+        <label>Client Type
+          <span class="required">*</span></label>
+        <select [(ngModel)]="clientType"  (ngModelChange)="onIdTypeChange()">
+          <option value="IND">IND</option>
+          <option value="LE">LE</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>ID Type  <span class="required">*</span></label>
+        <select [(ngModel)]="idType" (ngModelChange)="onIdTypeChange()">
+          <option value="">Select ID Type
+            <span class="required">*</span></option>
+          <option value="IDENTITY_PROOF">IDENTITY_PROOF</option>
+          <option value="ADDRESS_PROOF">ADDRESS_PROOF</option>
+          @if(clientType=="IND"){
+          <option value="Others">Others</option>}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>ID Name <span class="required">*</span></label>
+
+        <select
+          [(ngModel)]="idName">
+
+          <option value="">Select ID Name</option>
+
+          @for(name of idNames; track name){
+
+            <option [value]="name">
+
+              {{name}}
+
+            </option>
+
+          }
+
+        </select>
+      </div>
+      <div class="form-group">
+        <label>
+          {{ clientType == 'LE' ? 'Corporate Name' : 'First Name' }}
+          <span class="required">*</span>
+        </label>
+        <input type="text" [(ngModel)]="firstName">
+      </div>
+
+      @if(clientType == 'IND') {
+
+        <div class="form-group">
+          <label>Middle Name</label>
+          <input type="text" [(ngModel)]="middleName">
+        </div>
+
+        <div class="form-group">
+          <label>Last Name<span class="required">*</span></label>
+          <input type="text" [(ngModel)]="lastName">
+        </div>
+
+        <div class="form-group">
+          <label>Gender<span class="required">*</span></label>
+          <select [(ngModel)]="gender">
+            <option value="">Select Gender</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="T">Transgender</option>
+          </select>
+        </div>
+
+      }
+
+      <div class="form-group">
+        <label>
+          {{ clientType == 'LE'
+          ? 'Date Of Incorporation'
+          : 'Date Of Birth' }}
+          <span class="required">*</span>
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="dateOfBirth">
+      </div>
+
+    </div>
+
+    <div class="button-container">
+
+      <button
+        class="submit-btn"
+        (click)="search()">
+
+        Search KYC
+
+      </button>
+
+    </div>
+
+  </div>
+
+  @if(result){
+
+    <div class="section-card">
+
+      <h2>Search Result</h2>
+
+      <div class="result-grid">
+
+        <div><strong>Client Type:</strong> {{ result.clientType  || 'NA'}}</div>
+        <div><strong>ID Type:</strong> {{ result.idType  || 'NA' }}</div>
+        <div><strong>ID Name:</strong> {{ result.idName  || 'NA'}}</div>
+        <div><strong>ID Number:</strong> {{ result.idNumber  || 'NA'}}</div>
+        <div><strong>Prefix:</strong> {{ result.prefix  || 'NA'}}</div>
+
+        <div><strong>First Name:</strong> {{ result.firstName || 'NA' }}</div>
+        <div><strong>Middle Name:</strong> {{ result.middleName || 'NA' }}</div>
+
+        <div><strong>Last Name:</strong> {{ result.lastName || 'NA' }}</div>
+        <div><strong>Gender:</strong> {{ result.gender  || 'NA'}}</div>
+
+        <div><strong>DOB:</strong> {{ result.dateOfBirth  || 'NA'}}</div>
+        <div><strong>Relationship Type:</strong> {{ result.relationshipType || 'NA' }}</div>
+        <div><strong>Related Person Prefix:</strong> {{ result.relatedPersonPrefix }}</div>
+        <div><strong>Related Person First Name:</strong> {{ result.relatedPersonFirstName || 'NA' }}</div>
+        <div><strong>Related Person Middle Name:</strong> {{ result.relatedPersonMiddleName || 'NA' }}</div>
+        <div><strong>Related Person Last Name:</strong> {{ result.relatedPersonLastName || 'NA' }}</div>
+        <div><strong>Mobile:</strong> {{ result.mobileNumber  || 'NA'}}</div>
+        <div><strong>Email:</strong> {{ result.emailAddress  || 'NA'}}</div>
+
+        <div><strong>Address:</strong> {{ result.addressLine1  || 'NA'}}</div>
+        <div><strong>City:</strong> {{ result.city || 'NA' }}</div>
+
+        <div><strong>District:</strong> {{ result.district  || 'NA'}}</div>
+        <div><strong>State:</strong> {{ result.state || 'NA' }}</div>
+
+        <div><strong>Country:</strong> {{ result.country  || 'NA'}}</div>
+        <div><strong>Pin Code:</strong> {{ result.pinCode || 'NA' }}</div>
+
+        <div><strong>Corr Address:</strong> {{ result.correspondenceAddressLine1 || 'NA' }}</div>
+        <div><strong>Corr City:</strong> {{ result.correspondenceCity || 'NA' }}</div>
+        <div><strong>Corr District:</strong> {{ result.correspondencedistrict || 'NA' }}</div>
+        <div><strong>Corr State:</strong> {{ result.correspondenceState || 'NA' }}</div>
+        <div><strong>Corr Country:</strong> {{ result.correspondencecountry  || 'NA'}}</div>
+          <div><strong>Corr Pin:</strong> {{ result.correspondencePinCode  || 'NA'}}</div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
