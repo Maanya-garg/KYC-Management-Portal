@@ -29,6 +29,7 @@ A full-stack KYC Management Portal developed during my Software Engineering Inte
 - H2 Database
 
 ## Tools
+- Swagger (OpenAPI)
 - Maven
 - Git
 - GitHub
