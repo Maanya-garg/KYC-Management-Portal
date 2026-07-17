@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class KycService {
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'http://localhost:8080/api/kyc';
 
   constructor(private http: HttpClient) {}
 
@@ -14,7 +14,7 @@ export class KycService {
   }
   searchKyc(data: any) {
     return this.http.post(
-      'http://localhost:8080/search',
+      `${this.apiUrl}/search`,
       data
     );
   }

@@ -18,8 +18,8 @@ public interface KycRepository extends JpaRepository<KycRecord,String> {
             AND k.idName=:idName
             AND k.idNumber = :idNumber
             AND LOWER(k.firstName) = LOWER(:firstName)
-            AND LOWER(k.lastName) = LOWER(:lastName)
-            AND k.gender = :gender
+            AND (:lastName IS NULL OR LOWER(k.lastName) = LOWER(:lastName))
+            AND (:gender IS NULL OR k.gender = :gender)
             AND k.dateOfBirth = :dateOfBirth
             """)
     Optional<KycRecord> searchKyc(

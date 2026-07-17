@@ -1,44 +1,107 @@
-<div class="login-container">
+<div class="login-wrapper">
 
-  <div class="login-card">
+  <!-- LEFT BRAND PANEL -->
+  <div class="brand-panel">
+    <div class="brand-content">
 
-    <h1>IFFCO TOKIO KYC PORTAL</h1>
+      <div class="brand-logo">
+        <span class="logo-icon">
+          <mat-icon>shield</mat-icon>
+        </span>
+        <div class="logo-text">
+          <span class="logo-main">IFFCO TOKIO</span>
+          <span class="logo-sub">General Insurance</span>
+        </div>
+      </div>
 
-    <p class="subtitle">
-      Login to access the KYC Management System
-    </p>
+      <div class="brand-tagline">
+        <h1>KYC Management<br>Portal</h1>
+        <p>
+          Streamline your customer verification process with our
+          enterprise-grade KYC administration platform.
+        </p>
+      </div>
 
-    <div class="form-group">
-
-      <label>Username</label>
-
-      <input
-        type="text"
-        [(ngModel)]="username"
-        placeholder="Enter your username">
+      <div class="brand-features">
+        <div class="feature-item">
+          <mat-icon>verified_user</mat-icon>
+          <span>Secure Identity Verification</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>manage_search</mat-icon>
+          <span>Instant Record Retrieval</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>update</mat-icon>
+          <span>Real-time Record Updates</span>
+        </div>
+      </div>
 
     </div>
 
-    <div class="form-group">
-
-      <label>Password</label>
-
-      <input
-        type="password"
-        [(ngModel)]="password"
-        placeholder="Enter your password">
-
+    <div class="brand-footer">
+      <p>© 2025 IFFCO TOKIO General Insurance Co. Ltd. All rights reserved.</p>
     </div>
-
-    <button
-      class="login-btn"
-      (click)="login()">
-
-      Login
-
-    </button>
-    <p class="demo-note">
-      Default Login: <strong>admin</strong> / <strong>admin123</strong>
-    </p>
   </div>
+
+  <!-- RIGHT SIGN-IN PANEL -->
+  <div class="signin-panel">
+    <div class="signin-card">
+
+      <div class="signin-header">
+        <h2>Sign in</h2>
+        <p>Enter your credentials to access the portal</p>
+      </div>
+
+      <div class="signin-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <mat-icon matPrefix class="field-icon">person_outline</mat-icon>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="username"
+            placeholder="Enter your username"
+            id="username-input" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix class="field-icon">lock_outline</mat-icon>
+          <input
+            matInput
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            placeholder="Enter your password"
+            id="password-input" />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="showPassword = !showPassword"
+            [attr.aria-label]="'Toggle password visibility'">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          class="signin-btn"
+          id="login-btn"
+          (click)="login()">
+          <mat-icon>login</mat-icon>
+          Sign In
+        </button>
+
+      </div>
+
+      <div class="signin-hint">
+        <mat-icon>info_outline</mat-icon>
+        <span>Default credentials: <strong>admin</strong> / <strong>admin123</strong></span>
+      </div>
+
+    </div>
+  </div>
+
 </div>

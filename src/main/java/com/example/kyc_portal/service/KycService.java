@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,6 +103,10 @@ public class KycService {
     }
 
     public KycRecord searchKyc(SearchRequestDTO request) {
+
+        LocalDate dateOfBirth = LocalDate
+                .parse(request.getDateOfBirth());
+
         return repo.searchKyc(
                 request.getIdType(),
                 request.getIdName(),
@@ -109,7 +114,7 @@ public class KycService {
                 request.getFirstName(),
                 request.getLastName(),
                 request.getGender(),
-                LocalDate.parse(request.getDateOfBirth())
+                dateOfBirth
         ).orElse(null);
     }
     public KycRecord getKycByIdNumber(String idNumber){

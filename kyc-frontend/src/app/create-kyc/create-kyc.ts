@@ -1,9 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { KycService } from '../services/kyc.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-create-kyc',
-  imports: [FormsModule],
+  imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatDividerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    RouterLink
+  ],
   templateUrl: './create-kyc.html',
   styleUrl: './create-kyc.css',
 })
@@ -41,164 +70,164 @@ export class CreateKyc {
   clientType = 'IND';
   idName = '';
   prefix = '';
-
   middleName = '';
-
   gender = '';
-
   dateOfBirth = '';
   relationshipType = '';
-
-relatedPersonPrefix= '';
-
+  relatedPersonPrefix= '';
   relatedPersonFirstName = '';
-
   relatedPersonMiddleName = '';
-
   relatedPersonLastName = '';
-
   mobileNumber = '';
-
   emailAddress = '';
-
   addressLine1 = '';
-
   city = '';
-
   district = '';
-
   state = '';
-
   country = '';
-
   pinCode = '';
   correspondenceAddressLine1 = '';
-
   correspondenceCity = '';
-
   correspondenceDistrict = '';
-
   correspondenceState = '';
-
   correspondenceCountry = '';
-
   correspondencePinCode = '';
   sameAsAddress = false;
-  constructor(private kycService: KycService) {
+  
+  // Wizard state
+  currentStep = 1;
+  loading = false;
+  submissionSuccess = false;
+
+  step1Submitted = false;
+  step2Submitted = false;
+  step3Submitted = false;
+  step4Submitted = false;
+
+  constructor(
+    private kycService: KycService,
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  showError(message: string) {
+    this.snackBar.open(message, 'Close', { duration: 4000, panelClass: 'error-snackbar' });
   }
-  onIdTypeChange() {
 
-    if (this.idType === 'IDENTITY_PROOF') {
+  scrollToFirstInvalidControl() {
+    setTimeout(() => {
+      const firstInvalidControl = document.querySelector('.ng-invalid');
+      if (firstInvalidControl) {
+        firstInvalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        (firstInvalidControl as HTMLElement).focus();
+      }
+    }, 100);
+  }
 
-      this.idNames = this.identityProofs;
-
+  validateStep1(): boolean {
+    this.step1Submitted = true;
+    if (!this.idNumber || !this.clientType || !this.idType || !this.idName) {
+      this.showError('Please complete all mandatory fields in this section before continuing.');
+      this.scrollToFirstInvalidControl();
+      return false;
     }
+    return true;
+  }
 
-    else if (this.idType === 'ADDRESS_PROOF') {
+  validateStep2(): boolean {
+    this.step2Submitted = true;
+    if (!this.firstName || !this.dateOfBirth) {
+      this.showError('Please complete all mandatory fields in this section before continuing.');
+      this.scrollToFirstInvalidControl();
+      return false;
+    }
+    if (this.clientType === 'IND') {
+      if (!this.lastName || !this.gender) {
+        this.showError('Please complete all mandatory fields in this section before continuing.');
+        this.scrollToFirstInvalidControl();
+        return false;
+      }
+    }
+    return true;
+  }
 
+  validateStep3(): boolean {
+    this.step3Submitted = true;
+    if (!this.mobileNumber || this.mobileNumber.length !== 10) {
+      this.showError('Please complete all mandatory fields in this section before continuing.');
+      this.scrollToFirstInvalidControl();
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!this.emailAddress || !emailRegex.test(this.emailAddress)) {
+      this.showError('Please complete all mandatory fields in this section before continuing.');
+      this.scrollToFirstInvalidControl();
+      return false;
+    }
+    return true;
+  }
+
+  validateStep4(): boolean {
+    this.step4Submitted = true;
+    if (!this.addressLine1 || !this.city || !this.state || !this.country || !this.pinCode || this.pinCode.length !== 6) {
+      this.showError('Please complete all mandatory fields in this section before continuing.');
+      this.scrollToFirstInvalidControl();
+      return false;
+    }
+    return true;
+  }
+
+  nextStep() {
+    if (this.currentStep === 1 && !this.validateStep1()) return;
+    if (this.currentStep === 2 && !this.validateStep2()) return;
+    if (this.currentStep === 3 && !this.validateStep3()) return;
+    this.currentStep++;
+  }
+
+  prevStep() {
+    this.currentStep--;
+  }
+
+  onIdTypeChange() {
+    if (this.idType === 'IDENTITY_PROOF') {
+      this.idNames = this.identityProofs;
+    } else if (this.idType === 'ADDRESS_PROOF') {
       if (this.clientType === 'IND') {
         this.idNames = this.indAddressProofs;
-      }
-      else {
+      } else {
         this.idNames = this.leAddressProofs;
       }
-
-    }
-
-    else if (this.idType === 'Others') {
-
+    } else if (this.idType === 'Others') {
       if (this.clientType === 'IND') {
         this.idNames = this.othersInd;
-      }
-      else {
+      } else {
         this.idNames = this.othersLe;
       }
-
-    }
-
-    else {
-
+    } else {
       this.idNames = [];
-
     }
-
     this.idName = '';
   }
 
+  private formatDate(date: any): string | null {
+    if (!date) return null;
+    if (typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      return date;
+    }
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+
   submitForm() {
-    if(!this.idNumber){
-      alert("ID Number is required");
-      return;
-    }
-    if(!this.idType){
-      alert("ID Type is required");
-      return;
-    }
-    if(!this.idName){
+    if (!this.validateStep4()) return;
 
-      alert("ID Name is required");
-
-      return;
-
-    }
-    if(!this.firstName){
-      alert(
-        this.clientType === 'LE'
-          ? 'Corporate Name is required'
-          : 'First Name is required'
-      );
-      return;
-    }
-    if (this.clientType === 'IND') {
-    if(!this.lastName){
-      alert("Lastname is required");
-      return;
-    }
-    if(!this.gender){
-      alert("Gender is required");
-      return;
-    }}
-    if(!this.dateOfBirth){
-      alert(
-        this.clientType === 'LE'
-          ? 'Date of incorporation is required'
-          : 'Date of Birth is required'
-      );
-      return;
-    }
-    if(!this.mobileNumber || this.mobileNumber.length !== 10){
-      alert("Mobile Number must be 10 digits");
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if(!emailRegex.test(this.emailAddress)){
-      alert("Please enter a valid email address (e.g. abc@gmail.com)");
-      return;
-    }
-    if(!this.addressLine1){
-      alert("Address Line 1 is required");
-      return;
-    }
-    if(!this.city){
-      alert("City is required");
-      return;
-    }
-    if(!this.state){
-      alert("State is required");
-      return;
-    }
-    if(!this.country){
-      alert("Country is required");
-      return;
-    }
-    if(this.pinCode.length !== 6){
-      alert("Pin Code must be 6 digits");
-      return;
-    }
     if (this.sameAsAddress) {
       this.copyAddress();
     }
+
     const data = {
       clientType: this.clientType,
       prefix: this.prefix,
@@ -207,7 +236,7 @@ relatedPersonPrefix= '';
       lastName: this.lastName,
       gender: this.gender,
       idName:this.idName,
-      dateOfBirth: this.dateOfBirth,
+      dateOfBirth: this.formatDate(this.dateOfBirth),
       relationshipType: this.relationshipType,
       relatedPersonPrefix: this.relatedPersonPrefix,
       relatedPersonFirstName: this.relatedPersonFirstName,
@@ -224,63 +253,91 @@ relatedPersonPrefix= '';
       idType: this.idType,
       idNumber: this.idNumber,
       correspondenceAddressLine1:this.correspondenceAddressLine1,
-
       correspondenceCity:this.correspondenceCity,
-
       correspondenceDistrict:this.correspondenceDistrict,
-
       correspondenceState:this.correspondenceState,
-
       correspondenceCountry:this.correspondenceCountry,
-
       correspondencePinCode:this.correspondencePinCode,
     };
 
-    this.kycService.createKyc(data).subscribe(response => {
-      console.log(response);
-      alert('KYC Created Successfully');
+    this.loading = true;
+    this.kycService.createKyc(data).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.loading = false;
+        this.submissionSuccess = true;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.loading = false;
+        this.showError('Failed to create KYC record. Please try again.');
+        console.error(err);
+        this.cdr.detectChanges();
+      }
     });
-
   }
+
+  resetForm() {
+    this.currentStep = 1;
+    this.submissionSuccess = false;
+    this.step1Submitted = false;
+    this.step2Submitted = false;
+    this.step3Submitted = false;
+    this.step4Submitted = false;
+    
+    this.firstName = '';
+    this.lastName = '';
+    this.idNumber = '';
+    this.idType = '';
+    this.clientType = 'IND';
+    this.idName = '';
+    this.prefix = '';
+    this.middleName = '';
+    this.gender = '';
+    this.dateOfBirth = '';
+    this.relationshipType = '';
+    this.relatedPersonPrefix= '';
+    this.relatedPersonFirstName = '';
+    this.relatedPersonMiddleName = '';
+    this.relatedPersonLastName = '';
+    this.mobileNumber = '';
+    this.emailAddress = '';
+    this.addressLine1 = '';
+    this.city = '';
+    this.district = '';
+    this.state = '';
+    this.country = '';
+    this.pinCode = '';
+    this.correspondenceAddressLine1 = '';
+    this.correspondenceCity = '';
+    this.correspondenceDistrict = '';
+    this.correspondenceState = '';
+    this.correspondenceCountry = '';
+    this.correspondencePinCode = '';
+    this.sameAsAddress = false;
+  }
+
   copyAddress() {
-
     if(this.sameAsAddress){
-
-      this.correspondenceAddressLine1 =
-        this.addressLine1;
-
-      this.correspondenceCity =
-        this.city;
-
-      this.correspondenceDistrict =
-        this.district;
-
-      this.correspondenceState =
-        this.state;
-
-      this.correspondenceCountry =
-        this.country;
-
-      this.correspondencePinCode =
-        this.pinCode;
-
+      this.correspondenceAddressLine1 = this.addressLine1;
+      this.correspondenceCity = this.city;
+      this.correspondenceDistrict = this.district;
+      this.correspondenceState = this.state;
+      this.correspondenceCountry = this.country;
+      this.correspondencePinCode = this.pinCode;
     } else {
-
       this.correspondenceAddressLine1 = '';
       this.correspondenceCity = '';
       this.correspondenceDistrict = '';
       this.correspondenceState = '';
       this.correspondenceCountry = '';
       this.correspondencePinCode = '';
-
     }
-
   }
-  onAddressChange() {
 
+  onAddressChange() {
     if (this.sameAsAddress) {
       this.copyAddress();
     }
-
   }
 }

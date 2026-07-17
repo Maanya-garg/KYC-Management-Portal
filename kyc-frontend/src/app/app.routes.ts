@@ -1,21 +1,50 @@
 import { Routes } from '@angular/router';
 import { Login } from './login/login';
-import { Home} from './home/home';
+import { Home } from './home/home';
 import { CreateKyc } from './create-kyc/create-kyc';
 import { SearchKyc } from './search-kyc/search-kyc';
 import { UpdateKyc } from './update-kyc/update-kyc';
+import { Layout } from './shared/layout/layout';
+
 export const routes: Routes = [
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
 
-  { path: 'login', component: Login },
+  {
+    path: 'login',
+    component: Login
+  },
 
-  { path: 'home', component: Home },
+  {
+    path: '',
+    component: Layout,
+    children: [
 
-  { path: 'create', component: CreateKyc },
+      {
+        path: 'home',
+        component: Home
+      },
 
-  { path: 'search', component: SearchKyc },
+      {
+        path: 'create',
+        component: CreateKyc
+      },
 
-  { path: 'update', component: UpdateKyc }
+      {
+        path: 'search',
+        component: SearchKyc
+      },
+
+      {
+        path: 'update',
+        component: UpdateKyc
+      }
+
+    ]
+  }
 
 ];

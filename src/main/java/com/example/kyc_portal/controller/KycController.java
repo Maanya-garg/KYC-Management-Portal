@@ -14,7 +14,7 @@ import java.util.Optional;
 @Tag(name = "KYC Management APIs", description = "Operations for creating, searching, and updating KYC records")
 @RequestMapping("/api/kyc")
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+
 public class KycController {
     @Autowired
     KycService service;

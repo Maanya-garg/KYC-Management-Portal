@@ -1,201 +1,251 @@
-*{
-  box-sizing:border-box;
+/* ======================================
+   Update KYC – Wizard Styling
+   ====================================== */
+
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-body{
-  background:#f4f7f9;
+/* Load Card specific styling */
+.load-card {
+  border-left: 4px solid var(--azure);
+  margin-bottom: 32px;
 }
 
-.page-container{
-
-  max-width:1200px;
-
-  margin:30px auto;
-
-  padding:20px;
+.center-form {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 600px;
 }
 
-.page-header{
-
-  background:linear-gradient(
-    90deg,
-    #00a859,
-    #00c26e
-  );
-
-  color:white;
-
-  text-align:center;
-
-  padding:25px;
-
-  border-radius:15px;
-
-  margin-bottom:25px;
-
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+.load-input {
+  flex: 1;
+  margin-bottom: -22px; /* Offset material form field bottom padding */
 }
 
-.page-header h1{
-
-  margin:0;
-
-  font-size:32px;
+/* Wizard Header */
+.wizard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  background: var(--surface);
+  padding: 20px 32px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
 }
 
-.section-card{
-
-  background:white;
-
-  padding:25px;
-
-  border-radius:15px;
-
-  margin-bottom:25px;
-
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
 }
 
-.section-card h2{
-
-  color:#003366;
-
-  margin-bottom:20px;
-
-  padding-bottom:10px;
-
-  border-bottom:2px solid #00a859;
+.step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid var(--border);
+  transition: all 0.3s ease;
 }
 
-.form-grid{
-
-  display:grid;
-
-  grid-template-columns:1fr 1fr;
-
-  gap:20px;
+.step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
-.form-group{
-
-  display:flex;
-
-  flex-direction:column;
+/* Active Step */
+.step.active .step-circle {
+  background: var(--azure);
+  color: white;
+  border-color: var(--azure);
 }
 
-label{
-
-  font-weight:600;
-
-  margin-bottom:6px;
-
-  color:#333;
+.step.active .step-label {
+  color: var(--primary);
 }
 
-input,
-select{
-
-  width:100%;
-
-  padding:10px;
-
-  border:1px solid #ccc;
-
-  border-radius:8px;
-
-  font-size:14px;
+/* Completed Step */
+.step.completed .step-circle {
+  background: var(--success);
+  color: white;
+  border-color: var(--success);
+}
+.step.completed .step-label {
+  color: var(--success);
 }
 
-input:focus,
-select:focus{
-
-  outline:none;
-
-  border-color:#00a859;
+/* Step Line */
+.step-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  margin: 0 16px;
+  margin-top: -24px;
+  transition: background 0.3s ease;
 }
 
-.submit-btn{
-
-  background:#00a859;
-
-  color:white;
-
-  border:none;
-
-  padding:14px 30px;
-
-  border-radius:10px;
-
-  font-size:16px;
-
-  cursor:pointer;
-
-  transition:0.3s;
+.step-line.active {
+  background: var(--azure);
+}
+.step-line.completed {
+  background: var(--success);
 }
 
-.submit-btn:hover{
-
-  background:#008c4b;
+/* Wizard Card Animation */
+.wizard-card {
+  animation: slideFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.button-container{
-
-  text-align:center;
-
-  margin-top:30px;
+@keyframes slideFadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@media(max-width:768px){
+/* Wizard Actions */
+.wizard-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
 
-  .form-grid{
+.nav-btn {
+  padding: 10px 28px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  height: 44px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
 
-    grid-template-columns:1fr;
+.submit-btn {
+  padding: 12px 36px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  height: 48px;
+}
+
+.btn-spinner {
+  margin-right: 8px;
+}
+
+/* Success State */
+.success-card {
+  background: white;
+  border-radius: 12px;
+  padding: 64px 32px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.success-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--success-light);
+  color: var(--success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.success-icon-wrap mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+}
+
+.success-card h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.success-card p {
+  margin: 0 0 32px 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.success-actions {
+  display: flex;
+  gap: 16px;
+}
+
+/* Error Snackbar globally */
+::ng-deep .error-snackbar {
+  background: var(--error) !important;
+  color: white !important;
+}
+::ng-deep .error-snackbar .mat-mdc-button {
+  color: white !important;
+}
+
+.next-btn {
+  margin-left: auto;
+}
+
+.nav-btn mat-icon {
+  margin-right: 6px;
+}
+.next-btn mat-icon {
+  margin-right: 0;
+  margin-left: 6px;
+}
+
+/* Form overrides */
+.full-span {
+  grid-column: 1 / -1;
+}
+
+.same-address-toggle {
+  margin: -4px 0 16px 0;
+}
+
+@media (max-width: 768px) {
+  .center-form {
+    flex-direction: column;
+    align-items: stretch;
   }
-
-  .page-header h1{
-
-    font-size:24px;
+  .load-input {
+    margin-bottom: 0;
   }
 }
-.same-address{
 
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
-
-  margin-bottom:20px;
-}
-
-.same-address input{
-
-  width:auto;
-}
-.required{
-
-  color:red;
-
-  font-weight:bold;
-}
-
-.center-form{
-
-  display:flex;
-
-  flex-direction:column;
-
-  align-items:center;
-
-  gap:20px;
-}
-
-.center-form .form-group{
-
-  width:100%;
-}
-
-.center-form input{
-
-  width:100%;
+@media (max-width: 600px) {
+  .wizard-header {
+    padding: 16px;
+  }
+  .step-label {
+    display: none;
+  }
+  .step-line {
+    margin-top: 0;
+  }
 }
