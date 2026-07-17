@@ -1,0 +1,181 @@
+/* =========================================
+   IFFCO TOKIO KYC Portal – Global Styles
+   Enterprise Admin Portal Design System
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* --- Design Tokens --- */
+:root {
+  --primary:         #0F3D91;
+  --primary-dark:    #0A2D6E;
+  --primary-light:   #E8EFFE;
+  --azure:           #0078D4;
+  --azure-light:     #E6F2FB;
+  --success:         #107C10;
+  --success-light:   #E8F5E8;
+  --danger:          #D13438;
+  --danger-light:    #FDECEC;
+  --warning:         #D07A00;
+  --warning-light:   #FFF4E0;
+  --surface:         #F3F4F6;
+  --surface-2:       #FFFFFF;
+  --border:          #E1E4E8;
+  --border-subtle:   #F0F1F3;
+  --text-primary:    #1A1A2E;
+  --text-secondary:  #4B5563;
+  --text-muted:      #9CA3AF;
+  --sidebar-bg:      #1B2A4A;
+  --sidebar-hover:   rgba(255,255,255,0.08);
+  --sidebar-active:  rgba(255,255,255,0.14);
+  --shadow-sm:       0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:       0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:       0 10px 30px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06);
+  --radius-sm:       6px;
+  --radius-md:       10px;
+  --radius-lg:       14px;
+  --radius-xl:       20px;
+  --sidebar-width:   260px;
+  --sidebar-collapsed-width: 68px;
+  --navbar-height:   56px; /* more compact */
+  --transition:      all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Global Reset --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+/* --- Angular Material Overrides --- */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background-color: var(--azure) !important;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  color: #ffffff !important;
+}
+
+.mat-mdc-raised-button span, .mat-mdc-stroked-button span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mdc-floating-label--required::after, .mat-mdc-form-field-required-marker {
+  color: var(--danger) !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+  border-color: var(--border) !important;
+}
+
+/* --- Page Section Card --- */
+.section-card {
+  background: var(--surface-2);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  transition: var(--transition);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.section-header mat-icon {
+  color: var(--azure);
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* --- Page Header --- */
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  margin: 0 0 4px 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.page-header p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* --- Form Grid --- */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Button Container --- */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+  gap: 12px;
+}
+
+/* --- Required Asterisk --- */
+.required {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* --- Utility --- */
+.flex-center { display: flex; align-items: center; }
+.gap-8 { gap: 8px; }

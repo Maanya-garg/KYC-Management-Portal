@@ -1,0 +1,59 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+
+  <!-- Brand Logo -->
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <mat-icon>shield</mat-icon>
+    </div>
+    <div class="brand-text" *ngIf="!isCollapsed">
+      <span class="brand-name">IFFCO TOKIO</span>
+      <span class="brand-sub">KYC Portal</span>
+    </div>
+    <button mat-icon-button class="toggle-btn" (click)="toggleSidebar()">
+      <mat-icon>{{ isCollapsed ? 'menu' : 'menu_open' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Divider -->
+  <div class="sidebar-divider"></div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <p class="nav-label" *ngIf="!isCollapsed">NAVIGATION</p>
+
+    <a
+      *ngFor="let item of menuItems"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      matRipple
+      [matRippleColor]="'rgba(255,255,255,0.08)'"
+      class="nav-item"
+      [matTooltip]="isCollapsed ? item.title : ''"
+      matTooltipPosition="right">
+
+      <span class="nav-icon">
+        <mat-icon>{{ item.icon }}</mat-icon>
+      </span>
+      <span class="nav-label-text" *ngIf="!isCollapsed">{{ item.title }}</span>
+      <span class="active-indicator"></span>
+
+    </a>
+  </nav>
+
+  <!-- Spacer -->
+  <div class="sidebar-spacer"></div>
+
+  <!-- Bottom section -->
+  <div class="sidebar-bottom">
+    <div class="sidebar-divider"></div>
+
+    <a routerLink="/login" class="nav-item logout-item" matRipple [matRippleColor]="'rgba(209,52,56,0.12)'"
+       [matTooltip]="isCollapsed ? 'Logout' : ''" matTooltipPosition="right">
+      <span class="nav-icon logout-icon">
+        <mat-icon>logout</mat-icon>
+      </span>
+      <span class="nav-label-text" *ngIf="!isCollapsed">Logout</span>
+    </a>
+  </div>
+
+</aside>

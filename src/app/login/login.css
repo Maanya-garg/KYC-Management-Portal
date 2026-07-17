@@ -1,0 +1,279 @@
+/* ======================================
+   Login Page – Enterprise Split Screen
+   ====================================== */
+
+.login-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ---- Left Brand Panel ---- */
+.brand-panel {
+  flex: 0 0 480px;
+  background: linear-gradient(145deg, #0F3D91 0%, #1B2A4A 60%, #0a1e38 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 52px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative geometric shapes */
+.brand-panel::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+
+.brand-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 60px;
+  left: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(0,120,212,0.12);
+  pointer-events: none;
+}
+
+.brand-content {
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Logo */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: #5BB8FF;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-main {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+}
+
+.logo-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* Tagline */
+.brand-tagline h1 {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+}
+
+.brand-tagline p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.70);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Feature list */
+.brand-features {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+}
+
+.feature-item mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #5BB8FF;
+  flex-shrink: 0;
+}
+
+/* Brand footer */
+.brand-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-footer p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.40);
+  margin: 0;
+}
+
+/* ---- Right Sign-in Panel ---- */
+.signin-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F3F4F6;
+  padding: 40px 24px;
+}
+
+.signin-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 44px 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Card header */
+.signin-header {
+  margin-bottom: 32px;
+}
+
+.signin-header h2 {
+  margin: 0 0 6px 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1A1A2E;
+  letter-spacing: -0.02em;
+}
+
+.signin-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #6B7280;
+}
+
+/* Form */
+.signin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.field-icon {
+  color: #9CA3AF;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+}
+
+/* Sign-in button */
+.signin-btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 8px;
+  background: #0078D4 !important;
+  color: white !important;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 8px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signin-btn:hover {
+  background: #006CBE !important;
+  box-shadow: 0 4px 16px rgba(0,120,212,0.30) !important;
+}
+
+.signin-btn mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Hint */
+.signin-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 12px 16px;
+  background: #EFF6FF;
+  border-radius: 8px;
+  border: 1px solid #BFDBFE;
+  font-size: 13px;
+  color: #374151;
+}
+
+.signin-hint mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #0078D4;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .brand-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .signin-card {
+    padding: 32px 24px;
+  }
+}

@@ -1,0 +1,178 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <h1>Search KYC</h1>
+    <p>Search for an existing customer KYC record.</p>
+  </div>
+
+  <div class="section-card search-card">
+
+    <div class="section-header">
+      <mat-icon>manage_search</mat-icon>
+      <h2>Search Criteria</h2>
+    </div>
+
+    <div class="form-grid">
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID Number</mat-label>
+        <input matInput type="text" [(ngModel)]="idNumber" required>
+        @if(searchAttempted && !idNumber) { <mat-error>ID Number is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Client Type</mat-label>
+        <mat-select [(ngModel)]="clientType" (ngModelChange)="onIdTypeChange()" required>
+          <mat-option value="IND">IND</mat-option>
+          <mat-option value="LE">LE</mat-option>
+        </mat-select>
+        @if(searchAttempted && !clientType) { <mat-error>Client Type is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID Type</mat-label>
+        <mat-select [(ngModel)]="idType" (ngModelChange)="onIdTypeChange()" required>
+          <mat-option value="">Select ID Type</mat-option>
+          <mat-option value="IDENTITY_PROOF">IDENTITY_PROOF</mat-option>
+          <mat-option value="ADDRESS_PROOF">ADDRESS_PROOF</mat-option>
+          @if(clientType=="IND"){
+            <mat-option value="Others">Others</mat-option>
+          }
+        </mat-select>
+        @if(searchAttempted && !idType) { <mat-error>ID Type is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID Name</mat-label>
+        <mat-select [(ngModel)]="idName" required>
+          <mat-option value="">Select ID Name</mat-option>
+          @for(name of idNames; track name){
+            <mat-option [value]="name">{{name}}</mat-option>
+          }
+        </mat-select>
+        @if(searchAttempted && !idName) { <mat-error>ID Name is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>
+          {{ clientType == 'LE' ? 'Corporate Name' : 'First Name' }}
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="firstName" required>
+        @if(searchAttempted && !firstName) { <mat-error>{{ clientType == 'LE' ? 'Corporate Name' : 'First Name' }} is required</mat-error> }
+      </mat-form-field>
+      
+      @if(clientType == 'IND'){
+        <mat-form-field appearance="outline">
+          <mat-label>Middle Name</mat-label>
+          <input matInput type="text" [(ngModel)]="middleName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput type="text" [(ngModel)]="lastName" required>
+          @if(searchAttempted && !lastName) { <mat-error>Last Name is required</mat-error> }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Gender</mat-label>
+          <mat-select [(ngModel)]="gender" required>
+            <mat-option value="">Select Gender</mat-option>
+            <mat-option value="M">Male</mat-option>
+            <mat-option value="F">Female</mat-option>
+            <mat-option value="T">Transgender</mat-option>
+          </mat-select>
+          @if(searchAttempted && !gender) { <mat-error>Gender is required</mat-error> }
+        </mat-form-field>
+      }
+
+      <mat-form-field appearance="outline">
+        <mat-label>
+          {{ clientType == 'LE' ? 'Date Of Incorporation' : 'Date Of Birth' }}
+        </mat-label>
+        <input matInput [matDatepicker]="searchPicker" [(ngModel)]="dateOfBirth" required>
+        <mat-datepicker-toggle matIconSuffix [for]="searchPicker"></mat-datepicker-toggle>
+        <mat-datepicker #searchPicker></mat-datepicker>
+        @if(searchAttempted && !dateOfBirth) { <mat-error>{{ clientType == 'LE' ? 'Date Of Incorporation' : 'Date Of Birth' }} is required</mat-error> }
+      </mat-form-field>
+
+    </div>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" class="submit-btn" (click)="search()" [disabled]="loading">
+        @if(loading) {
+          <mat-spinner diameter="20" class="btn-spinner"></mat-spinner> Searching...
+        } @else {
+          <span><mat-icon>search</mat-icon> Search KYC</span>
+        }
+      </button>
+    </div>
+
+  </div>
+
+  @if(kycRecords.length > 0) {
+  <div class="section-card result-card">
+    
+    <div class="section-header">
+      <mat-icon style="color: var(--success);">verified_user</mat-icon>
+      <h2>Record Found</h2>
+      <div class="result-status">ACTIVE</div>
+    </div>
+    
+    <div class="result-content">
+      
+      <!-- Identity Section -->
+      <div class="result-group">
+        <h3 class="group-title">Identity</h3>
+        <div class="result-grid">
+          <div class="data-field"><span class="data-label">ID Number</span><span class="data-value">{{ kycRecords[0].idNumber }}</span></div>
+          <div class="data-field"><span class="data-label">Client Type</span><span class="data-value">{{ kycRecords[0].clientType }}</span></div>
+          <div class="data-field"><span class="data-label">ID Type</span><span class="data-value">{{ kycRecords[0].idType }}</span></div>
+          <div class="data-field"><span class="data-label">ID Name</span><span class="data-value">{{ kycRecords[0].idName }}</span></div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Personal Section -->
+      <div class="result-group">
+        <h3 class="group-title">Personal</h3>
+        <div class="result-grid">
+          <div class="data-field full-span">
+            <span class="data-label">Full Name</span>
+            <span class="data-value">{{ kycRecords[0].prefix }} {{ kycRecords[0].firstName }} {{ kycRecords[0].middleName }} {{ kycRecords[0].lastName }}</span>
+          </div>
+          <div class="data-field"><span class="data-label">Gender</span><span class="data-value">{{ kycRecords[0].gender || 'N/A' }}</span></div>
+          <div class="data-field"><span class="data-label">Date of Birth / Inc.</span><span class="data-value">{{ kycRecords[0].dateOfBirth | date:'mediumDate' }}</span></div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Contact Section -->
+      <div class="result-group">
+        <h3 class="group-title">Contact</h3>
+        <div class="result-grid">
+          <div class="data-field"><span class="data-label">Mobile</span><span class="data-value">{{ kycRecords[0].mobileNumber }}</span></div>
+          <div class="data-field"><span class="data-label">Email</span><span class="data-value">{{ kycRecords[0].emailAddress }}</span></div>
+        </div>
+      </div>
+      
+      <!-- Address Section -->
+      <mat-divider></mat-divider>
+      
+      <div class="result-group">
+        <h3 class="group-title">Address</h3>
+        <div class="result-grid">
+          <div class="data-field full-span">
+            <span class="data-label">Location</span>
+            <span class="data-value">{{ kycRecords[0].addressLine1 }}, {{ kycRecords[0].city }}, {{ kycRecords[0].state }} - {{ kycRecords[0].pinCode }}, {{ kycRecords[0].country }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  }
+
+</div>

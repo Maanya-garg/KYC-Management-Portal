@@ -1,0 +1,135 @@
+<!-- Page Header -->
+<div class="page-header hero-section">
+  <div class="header-content">
+    <div class="header-text">
+      <h1>Customer KYC Management Portal</h1>
+      <p>Centralized enterprise platform for identity verification, regulatory compliance, and customer lifecycle management.</p>
+    </div>
+    <div class="hero-graphic">
+      <mat-icon>admin_panel_settings</mat-icon>
+    </div>
+  </div>
+</div>
+
+<!-- Horizontal Action Cards Grid -->
+<div class="actions-grid">
+
+  <!-- Create KYC -->
+  <mat-card class="action-card compact-card" routerLink="/create" matRipple [matRippleColor]="'rgba(0,120,212,0.08)'">
+    <div class="card-icon-wrap create-icon">
+      <mat-icon>person_add</mat-icon>
+    </div>
+    <div class="card-text">
+      <h3>Create KYC</h3>
+      <p>Register a new customer KYC record</p>
+    </div>
+    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+  </mat-card>
+
+  <!-- Search KYC -->
+  <mat-card class="action-card compact-card" routerLink="/search" matRipple [matRippleColor]="'rgba(16,124,16,0.08)'">
+    <div class="card-icon-wrap search-icon">
+      <mat-icon>manage_search</mat-icon>
+    </div>
+    <div class="card-text">
+      <h3>Search KYC</h3>
+      <p>Find and view existing records</p>
+    </div>
+    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+  </mat-card>
+
+  <!-- Update KYC -->
+  <mat-card class="action-card compact-card" routerLink="/update" matRipple [matRippleColor]="'rgba(208,122,0,0.08)'">
+    <div class="card-icon-wrap update-icon">
+      <mat-icon>edit_note</mat-icon>
+    </div>
+    <div class="card-text">
+      <h3>Update KYC</h3>
+      <p>Modify an existing customer record</p>
+    </div>
+    <mat-icon class="card-arrow">arrow_forward</mat-icon>
+  </mat-card>
+
+  <!-- KYC Checklist (Triggers Dialog) -->
+  <mat-card class="action-card compact-card" (click)="openChecklist()" matRipple [matRippleColor]="'rgba(124,58,237,0.08)'">
+    <div class="card-icon-wrap checklist-icon">
+      <mat-icon>checklist</mat-icon>
+    </div>
+    <div class="card-text">
+      <h3>KYC Checklist</h3>
+      <p>Reference guide for required documents</p>
+    </div>
+    <mat-icon class="card-arrow">open_in_new</mat-icon>
+  </mat-card>
+
+</div>
+
+<!-- Customer KYC Workflow Section -->
+<div class="workflow-section">
+  <h3>Standard Operating Procedure</h3>
+  <div class="workflow-steps">
+    <div class="w-step">
+      <div class="w-icon create-icon"><mat-icon>how_to_reg</mat-icon></div>
+      <div class="w-text">
+        <h4>1. Initiation</h4>
+        <p>Register identity and primary contact data for the new customer entity.</p>
+      </div>
+    </div>
+    <div class="w-step">
+      <div class="w-icon search-icon"><mat-icon>fact_check</mat-icon></div>
+      <div class="w-text">
+        <h4>2. Verification</h4>
+        <p>Cross-reference submitted identity proofs using the standard KYC Checklist.</p>
+      </div>
+    </div>
+    <div class="w-step">
+      <div class="w-icon checklist-icon"><mat-icon>verified</mat-icon></div>
+      <div class="w-text">
+        <h4>3. Compliance</h4>
+        <p>Ensure regulatory standards are met and finalize the record into Active status.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KYC Checklist Dialog Template -->
+<ng-template #checklistDialog>
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon>checklist</mat-icon>
+    KYC Document Checklist
+  </h2>
+  <mat-dialog-content class="dialog-content">
+
+    <div class="checklist-group">
+      <p class="checklist-title">
+        <mat-icon>person</mat-icon>
+        Individual (IND)
+      </p>
+      <ul>
+        <li><mat-icon>check_circle</mat-icon> <span>Identity Proof — PAN / FORM60</span></li>
+        <li><mat-icon>check_circle</mat-icon> <span>Address Proof — Aadhaar / Passport / Voter ID / DL</span></li>
+        <li><mat-icon>check_circle</mat-icon> <span>Recent Photograph</span></li>
+        <li><mat-icon>check_circle</mat-icon> <span>Mobile Number &amp; Email</span></li>
+      </ul>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="checklist-group">
+      <p class="checklist-title">
+        <mat-icon>business</mat-icon>
+        Legal Entity (LE)
+      </p>
+      <ul>
+        <li><mat-icon>check_circle</mat-icon> <span>Registration Certificate</span></li>
+        <li><mat-icon>check_circle</mat-icon> <span>Certificate of Incorporation / Formation</span></li>
+        <li><mat-icon>check_circle</mat-icon> <span>GSTIN Certificate</span></li>
+        <li><mat-icon>check_circle</mat-icon> <span>Date of Incorporation</span></li>
+      </ul>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</ng-template>
