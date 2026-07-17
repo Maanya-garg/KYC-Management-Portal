@@ -1,0 +1,391 @@
+<div class="page-container wizard-container">
+
+  <div class="page-header">
+    <h1>Update KYC</h1>
+    <p>Load an existing KYC record to update its details.</p>
+  </div>
+
+  <div class="section-card load-card" [style.display]="recordLoaded ? 'none' : 'block'">
+    <div class="section-header">
+      <mat-icon>find_in_page</mat-icon>
+      <h2>Load Existing Record</h2>
+    </div>
+
+    <div class="center-form">
+      <mat-form-field appearance="outline" class="load-input">
+        <mat-label>ID Number</mat-label>
+        <input matInput type="text" [(ngModel)]="idNumber" required placeholder="Enter ID Number to load">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="submit-btn" (click)="loadRecord()" [disabled]="loading">
+        @if(loading) {
+          <mat-spinner diameter="20" class="btn-spinner"></mat-spinner> Loading...
+        } @else {
+          <span><mat-icon>search</mat-icon> Load Record</span>
+        }
+      </button>
+    </div>
+  </div>
+  
+  <!-- KYC DETAILS WIZARD -->
+  @if(recordLoaded && !submissionSuccess){
+
+  <!-- Wizard Progress Header -->
+  <div class="wizard-header">
+    <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+      <div class="step-circle">
+        @if(currentStep > 1) { <mat-icon>check</mat-icon> } @else { 1 }
+      </div>
+      <span class="step-label">Identity</span>
+    </div>
+    <div class="step-line" [class.active]="currentStep >= 2"></div>
+    <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+      <div class="step-circle">
+        @if(currentStep > 2) { <mat-icon>check</mat-icon> } @else { 2 }
+      </div>
+      <span class="step-label">Personal</span>
+    </div>
+    <div class="step-line" [class.active]="currentStep >= 3"></div>
+    <div class="step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">
+      <div class="step-circle">
+        @if(currentStep > 3) { <mat-icon>check</mat-icon> } @else { 3 }
+      </div>
+      <span class="step-label">Contact</span>
+    </div>
+    <div class="step-line" [class.active]="currentStep >= 4"></div>
+    <div class="step" [class.active]="currentStep === 4" [class.completed]="currentStep > 4">
+      <div class="step-circle">
+        @if(currentStep > 4) { <mat-icon>check</mat-icon> } @else { 4 }
+      </div>
+      <span class="step-label">Address</span>
+    </div>
+  </div>
+  
+  <!-- Step 1: Identity -->
+  @if(currentStep === 1) {
+  <div class="section-card wizard-card">
+    <div class="section-header">
+      <mat-icon>badge</mat-icon>
+      <h2>Step 1: KYC Details</h2>
+    </div>
+
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Client Type</mat-label>
+        <mat-select [(ngModel)]="clientType" (ngModelChange)="onIdTypeChange()" required>
+          <mat-option value="IND">IND</mat-option>
+          <mat-option value="LE">LE</mat-option>
+        </mat-select>
+        @if(step1Submitted && !clientType) { <mat-error>Client Type is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID Type</mat-label>
+        <mat-select [(ngModel)]="idType" (ngModelChange)="onIdTypeChange()" required>
+          <mat-option value="">Select ID Type</mat-option>
+          <mat-option value="IDENTITY_PROOF">IDENTITY_PROOF</mat-option>
+          <mat-option value="ADDRESS_PROOF">ADDRESS_PROOF</mat-option>
+          @if(clientType=="IND"){
+            <mat-option value="Others">Others</mat-option>
+          }
+        </mat-select>
+        @if(step1Submitted && !idType) { <mat-error>ID Type is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID Name</mat-label>
+        <mat-select [(ngModel)]="idName" required>
+          <mat-option value="">Select ID Name</mat-option>
+          @for(name of idNames; track name){
+            <mat-option [value]="name">{{name}}</mat-option>
+          }
+        </mat-select>
+        @if(step1Submitted && !idName) { <mat-error>ID Name is required</mat-error> }
+      </mat-form-field>
+    </div>
+
+    <div class="wizard-actions">
+      <button mat-raised-button color="primary" class="nav-btn next-btn" (click)="nextStep()">
+        <span>Next Step <mat-icon>arrow_forward</mat-icon></span>
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Step 2: Personal Details -->
+  @if(currentStep === 2) {
+  <div class="section-card wizard-card">
+    <div class="section-header">
+      <mat-icon>person</mat-icon>
+      <h2>Step 2: Personal Details</h2>
+    </div>
+
+    <div class="form-grid">
+      @if(clientType == 'IND') {
+        <mat-form-field appearance="outline">
+          <mat-label>Prefix</mat-label>
+          <mat-select [(ngModel)]="prefix">
+            <mat-option value="">Select Prefix</mat-option>
+            <mat-option value="MR">MR</mat-option>
+            <mat-option value="MRS">MRS</mat-option>
+            <mat-option value="MS">MS</mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+      
+      <mat-form-field appearance="outline">
+        <mat-label>
+          {{ clientType == 'LE' ? 'Corporate Name' : 'First Name' }}
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="firstName" required>
+        @if(step2Submitted && !firstName) { <mat-error>{{ clientType == 'LE' ? 'Corporate Name' : 'First Name' }} is required</mat-error> }
+      </mat-form-field>
+      
+      @if(clientType == 'IND'){
+        <mat-form-field appearance="outline">
+          <mat-label>Middle Name</mat-label>
+          <input matInput type="text" [(ngModel)]="middleName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input matInput type="text" [(ngModel)]="lastName" required>
+          @if(step2Submitted && !lastName) { <mat-error>Last Name is required</mat-error> }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Gender</mat-label>
+          <mat-select [(ngModel)]="gender" required>
+            <mat-option value="">Select Gender</mat-option>
+            <mat-option value="M">Male</mat-option>
+            <mat-option value="F">Female</mat-option>
+            <mat-option value="T">Transgender</mat-option>
+          </mat-select>
+          @if(step2Submitted && !gender) { <mat-error>Gender is required</mat-error> }
+        </mat-form-field>
+      }
+
+      <mat-form-field appearance="outline">
+        <mat-label>
+          {{ clientType == 'LE' ? 'Date Of Incorporation' : 'Date Of Birth' }}
+        </mat-label>
+        <input matInput [matDatepicker]="updatePicker" [(ngModel)]="dateOfBirth" required>
+        <mat-datepicker-toggle matIconSuffix [for]="updatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #updatePicker></mat-datepicker>
+        @if(step2Submitted && !dateOfBirth) { <mat-error>{{ clientType == 'LE' ? 'Date Of Incorporation' : 'Date Of Birth' }} is required</mat-error> }
+      </mat-form-field>
+    </div>
+
+    <div class="wizard-actions">
+      <button mat-stroked-button class="nav-btn prev-btn" (click)="prevStep()">
+        <span><mat-icon>arrow_back</mat-icon> Back</span>
+      </button>
+      <button mat-raised-button color="primary" class="nav-btn next-btn" (click)="nextStep()">
+        <span>Next Step <mat-icon>arrow_forward</mat-icon></span>
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Step 3: Contact & Related Person Details -->
+  @if(currentStep === 3) {
+  <div class="section-card wizard-card">
+    <div class="section-header">
+      <mat-icon>contact_phone</mat-icon>
+      <h2>Step 3: Contact & Related Person Details</h2>
+    </div>
+
+    @if(clientType == 'IND') {
+      <div class="form-grid" style="margin-bottom: 24px;">
+        <mat-form-field appearance="outline">
+          <mat-label>Relationship Type</mat-label>
+          <mat-select [(ngModel)]="relationshipType">
+            <mat-option value="">Select Relationship</mat-option>
+            <mat-option value="Father">Father</mat-option>
+            <mat-option value="Mother">Mother</mat-option>
+            <mat-option value="Spouse">Spouse</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Related Person Prefix</mat-label>
+          <mat-select [(ngModel)]="relatedPersonPrefix">
+            <mat-option value="">Select Prefix</mat-option>
+            <mat-option value="MR">MR</mat-option>
+            <mat-option value="MRS">MRS</mat-option>
+            <mat-option value="MS">MS</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Related Person First Name</mat-label>
+          <input matInput type="text" [(ngModel)]="relatedPersonFirstName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Related Person Middle Name</mat-label>
+          <input matInput type="text" [(ngModel)]="relatedPersonMiddleName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Related Person Last Name</mat-label>
+          <input matInput type="text" [(ngModel)]="relatedPersonLastName">
+        </mat-form-field>
+      </div>
+      <mat-divider style="margin-bottom: 24px;"></mat-divider>
+    }
+
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Mobile Number</mat-label>
+        <input matInput type="text" [(ngModel)]="mobileNumber" name="mobile" #mobileCtrl="ngModel" required pattern="^[0-9]{10}$" maxlength="10" placeholder="10-digit mobile number">
+        <mat-icon matSuffix>phone</mat-icon>
+        @if((mobileCtrl.invalid && (mobileCtrl.dirty || mobileCtrl.touched)) || (step3Submitted && mobileCtrl.invalid)) { <mat-error>Valid 10-digit Mobile Number is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email Address</mat-label>
+        <input matInput type="email" [(ngModel)]="emailAddress" name="email" #emailCtrl="ngModel" required email placeholder="e.g. name@example.com">
+        <mat-icon matSuffix>email</mat-icon>
+        @if((emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) || (step3Submitted && emailCtrl.invalid)) { <mat-error>Valid Email is required</mat-error> }
+      </mat-form-field>
+    </div>
+
+    <div class="wizard-actions">
+      <button mat-stroked-button class="nav-btn prev-btn" (click)="prevStep()">
+        <span><mat-icon>arrow_back</mat-icon> Back</span>
+      </button>
+      <button mat-raised-button color="primary" class="nav-btn next-btn" (click)="nextStep()">
+        <span>Next Step <mat-icon>arrow_forward</mat-icon></span>
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Step 4: Address Details -->
+  @if(currentStep === 4) {
+  <div class="section-card wizard-card">
+    <div class="section-header">
+      <mat-icon>home</mat-icon>
+      <h2>Step 4: Address Details</h2>
+    </div>
+
+    <div class="form-grid" style="margin-bottom: 16px;">
+      <mat-form-field appearance="outline" class="full-span">
+        <mat-label>Address Line 1</mat-label>
+        <input matInput type="text" [(ngModel)]="addressLine1" required (ngModelChange)="onAddressChange()">
+        @if(step4Submitted && !addressLine1) { <mat-error>Address Line 1 is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>City</mat-label>
+        <input matInput type="text" [(ngModel)]="city" required (ngModelChange)="onAddressChange()">
+        @if(step4Submitted && !city) { <mat-error>City is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>District</mat-label>
+        <input matInput type="text" [(ngModel)]="district" (ngModelChange)="onAddressChange()">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>State</mat-label>
+        <input matInput type="text" [(ngModel)]="state" required (ngModelChange)="onAddressChange()">
+        @if(step4Submitted && !state) { <mat-error>State is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Country</mat-label>
+        <input matInput type="text" [(ngModel)]="country" required (ngModelChange)="onAddressChange()">
+        @if(step4Submitted && !country) { <mat-error>Country is required</mat-error> }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Pin Code</mat-label>
+        <input matInput type="text" [(ngModel)]="pinCode" required (ngModelChange)="onAddressChange()">
+        @if(step4Submitted && (!pinCode || pinCode.length !== 6)) { <mat-error>Valid 6-digit Pin Code is required</mat-error> }
+      </mat-form-field>
+    </div>
+
+    <mat-divider style="margin-bottom: 16px;"></mat-divider>
+
+    <div class="section-header" style="margin-bottom: 8px;">
+      <mat-icon style="color: var(--text-secondary); font-size: 20px;">mail</mat-icon>
+      <h3 style="margin: 0; font-size: 15px; font-weight: 600; color: var(--text-primary);">Correspondence Address</h3>
+    </div>
+
+    <div class="same-address-toggle">
+      <mat-checkbox [(ngModel)]="sameAsAddress" (change)="copyAddress()" color="primary">
+        Same as permanent address
+      </mat-checkbox>
+    </div>
+
+    <div class="form-grid">
+      <mat-form-field appearance="outline" class="full-span">
+        <mat-label>Correspondence Address Line 1</mat-label>
+        <input matInput type="text" [(ngModel)]="correspondenceAddressLine1">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correspondence City</mat-label>
+        <input matInput type="text" [(ngModel)]="correspondenceCity">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correspondence District</mat-label>
+        <input matInput type="text" [(ngModel)]="correspondenceDistrict">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correspondence State</mat-label>
+        <input matInput type="text" [(ngModel)]="correspondenceState">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correspondence Country</mat-label>
+        <input matInput type="text" [(ngModel)]="correspondenceCountry">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correspondence Pin Code</mat-label>
+        <input matInput type="text" [(ngModel)]="correspondencePinCode">
+      </mat-form-field>
+    </div>
+
+    <div class="wizard-actions">
+      <button mat-stroked-button class="nav-btn prev-btn" (click)="prevStep()" [disabled]="loading">
+        <mat-icon>arrow_back</mat-icon> Back
+      </button>
+      <button mat-raised-button color="primary" class="nav-btn submit-btn" (click)="update()" [disabled]="loading">
+        @if(loading) {
+          <mat-spinner diameter="20" class="btn-spinner"></mat-spinner> Updating...
+        } @else {
+          <span><mat-icon>save</mat-icon> Update KYC Record</span>
+        }
+      </button>
+    </div>
+  </div>
+  }
+  }
+
+  <!-- Success State -->
+  @if(submissionSuccess) {
+  <div class="success-card wizard-card">
+    <div class="success-icon-wrap">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <h2>KYC Record Updated Successfully</h2>
+    <p>The customer information has been saved successfully.</p>
+    
+    <div class="success-actions">
+      <button mat-raised-button color="primary" class="nav-btn" (click)="resetForm()">
+        <mat-icon>search</mat-icon> Load Another
+      </button>
+      <button mat-stroked-button class="nav-btn" routerLink="/home">
+        Back to Dashboard
+      </button>
+    </div>
+  </div>
+  }
+
+</div>

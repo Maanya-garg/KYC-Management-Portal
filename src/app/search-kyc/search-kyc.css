@@ -1,0 +1,127 @@
+/* ======================================
+   Search KYC – Form & Result Styling
+   ====================================== */
+
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.submit-btn {
+  padding: 12px 36px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  height: 48px;
+}
+
+.submit-btn mat-icon {
+  margin-right: 6px;
+}
+
+/* Form overrides */
+.form-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.button-container {
+  margin-top: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Result Card Header Status */
+.result-card {
+  margin-top: 32px;
+  border-left: 4px solid var(--success);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-status {
+  margin-left: auto;
+  background: var(--success-light);
+  color: var(--success);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Result Content Sections */
+.result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.result-group {
+  padding: 4px 0;
+}
+
+.group-title {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Result Data Grid */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px 24px;
+}
+
+.data-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.data-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.data-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.full-span {
+  grid-column: 1 / -1;
+}
+
+.btn-spinner {
+  margin-right: 8px;
+}
+
+/* Error Snackbar globally */
+::ng-deep .error-snackbar {
+  background: var(--error) !important;
+  color: white !important;
+}
+::ng-deep .error-snackbar .mat-mdc-button {
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .result-grid, .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

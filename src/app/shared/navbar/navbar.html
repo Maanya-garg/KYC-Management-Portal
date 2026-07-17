@@ -1,0 +1,52 @@
+<header class="navbar">
+
+  <!-- Left: App branding text -->
+  <div class="navbar-left">
+    <span class="portal-label">KYC Management Portal</span>
+  </div>
+
+  <!-- Right: Actions + Profile -->
+  <div class="navbar-right">
+
+    <!-- Notification bell -->
+    <button
+      mat-icon-button
+      class="icon-btn"
+      matTooltip="Notifications"
+      id="notifications-btn"
+      (click)="showNotImplemented('Notifications')">
+      <mat-icon
+        [matBadge]="'3'"
+        matBadgeSize="small"
+        matBadgeColor="warn">
+        notifications_none
+      </mat-icon>
+    </button>
+
+    <!-- Settings -->
+    <button
+      mat-icon-button
+      class="icon-btn"
+      matTooltip="Settings"
+      id="settings-btn"
+      (click)="showNotImplemented('Settings')">
+      <mat-icon>settings</mat-icon>
+    </button>
+
+    <!-- Divider -->
+    <div class="nav-divider"></div>
+
+    <!-- User Profile -->
+    <div class="profile-chip">
+      <div class="avatar" aria-label="User avatar">
+        {{ userName.charAt(0) }}
+      </div>
+      <div class="profile-info">
+        <span class="profile-name">{{ userName }}</span>
+        <span class="profile-role">Administrator</span>
+      </div>
+    </div>
+
+  </div>
+
+</header>
